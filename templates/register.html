@@ -1,0 +1,14 @@
+<html>
+<head>
+<title>Register</title>
+</head>
+<body>
+<form method="POST">
+{% if not password_confirm %}Passwords do not match.<br>{% endif %}
+Username: <input name="username" required type="text" value="{{username}}"><br>
+Password: <input name="password" required type="password"><br>
+Confirm password: <input name="password_confirm" required type="password"><br>
+<input name="register" type="submit" value="Register">
+</form>
+</body>
+</html>
