@@ -8,7 +8,7 @@ app = Flask(__name__)
 def home():
 	return render_template("home.html")
 
-@app.route("/login/")
+@app.route("/login/", methods=["GET", "POST"])
 def login():
 	
 	username = request.form.get("username")
@@ -24,10 +24,10 @@ def register():
 		return render_template("register.html", password_confirm = True)
 	if (password != password_confirm):
 		return render_template("register.html", password_confirm = False, username = username)
-	accounts = MongoClient()["accounts"]["accounts"]
-	accounts.insert({username: username, password: hashlib.sha512(password)})
+	accounts = MongoClient("cslab1-30", 1340)["users"]["users"]
+	accounts.insert({username: username, password: hashlib.sha256(password).hexdigest()})
 	return "<html><head><title>Registration successful</title></head><body><h2>Registration successful.</h2></body></html>"
 
 if (__name__ == "__main__"):
-	app.run(debug = True)
+	app.run(debug = True, port = 9001)
 
