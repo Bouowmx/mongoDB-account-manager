@@ -3,7 +3,8 @@
   <title>Register</title>
 <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
 </head>
-<body>
+<body><center>
+<h1>Login Details</h1>
 <form class="pure-form pure-form-aligned" method="POST">
 <fieldset>
 {% if not password_confirm %}Passwords do not match.<br>{% endif %}
@@ -17,12 +18,40 @@
 </div>
 <div class="pure-control-group">
 <label for="password_confirm">Confirm Password:</label>
-<input name="password_confirm" required type="password"><br>
+<input name="password_confirm" required type="password"><br><br><br>
+</div>
+<h1>Profile Information</h1>
+<div class="pure-control-group">
+<label for="fname">First Name:</label>
+<input name="fname" required type="text"><br>
+</div>
+<div class="pure-control-group">
+<label for="lname">Last Name:</label>
+<input name="lname" required type="text"><br>
+</div>
+<div class="pure-control-group">
+<label for="age">Age:</label>
+<input name="age" required type="text"><br>
+</div>
+<div class="pure-control-group">
+<label for="email">Email Address:</label>
+<input name="email" required type="text"><br>
+</div>
+<div class="pure-control-group">
+<label for="phone">Phone Number:</label>
+<input name="phone" required type="text"><br>
+</div>
+<div class="pure-control-group">
+<label for="address">Address:</label>
+<input name="address" required type="text"><br>
 </div>
 <div class="pure-controls">
-<input name="register" type="submit" value="Register">
+<input name="register" type="submit" value="Register" class="pure-button pure-button-primary">
+</div>
+<div class="pure-controls">
+<a href="/" class="pure-button">Home</a>
 </div>
 </fieldset>
 </form>
-</body>
+</center></body>
 </html>
