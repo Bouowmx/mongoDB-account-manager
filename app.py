@@ -30,11 +30,13 @@ def register():
         phone = request.form.get("phone")
         address = request.form.get("address")
 	if ((username is None) and (password is None) and (password_confirm is None)):
-		return render_template("register.html", password_confirm = True)
+		return render_template("register.html", password_confirm = True, username_available = True)
 	if (password != password_confirm):
 		return render_template("register.html", password_confirm = False, username = username)
-	accounts = MongoClient("cslab1-30", 1340)["users"]["users"]
-	accounts.insert({username: username, password: hashlib.sha256(password).hexdigest()})
+	users = MongoClient("mongodb://Bouowmx:ReimuHakurei@ds047440.mongolab.com:47440/account-manager")["account-manager"]["users"]
+	if (users.find({"username": username}).count() != 0):
+		return render_template("register.html", password_confirm = True, username = username, username_available = False)
+	users.insert({"username": username, "password": hashlib.sha256(password).hexdigest()})
 	return render_template("registersuccess.html", fname = fname, lname = lname);
 
 @app.route("/about/")

@@ -8,6 +8,7 @@
 <form class="pure-form pure-form-aligned" method="POST">
 <fieldset>
 {% if not password_confirm %}Passwords do not match.<br>{% endif %}
+{% if not username_available %}Username not available.<br>{% endif %}
 <div class="pure-control-group">
 <label for="username">Username:</label>
 <input name="username" required type="text" value="{{username}}"><br>
