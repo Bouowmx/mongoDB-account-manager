@@ -1,15 +1,28 @@
 <html>
 <head>
   <title>Register</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
 </head>
 <body>
-<form method="POST">
+<form class="pure-form pure-form-aligned" method="POST">
+<fieldset>
 {% if not password_confirm %}Passwords do not match.<br>{% endif %}
-Username: <input name="username" required type="text" value="{{username}}"><br>
-Password: <input name="password" required type="password"><br>
-Confirm password: <input name="password_confirm" required type="password"><br>
+<div class="pure-control-group">
+<label for="username">Username:</label>
+<input name="username" required type="text" value="{{username}}"><br>
+</div>
+<div class="pure-control-group">
+<label for="password">Password:</label>
+<input name="password" required type="password"><br>
+</div>
+<div class="pure-control-group">
+<label for="password_confirm">Confirm Password:</label>
+<input name="password_confirm" required type="password"><br>
+</div>
+<div class="pure-controls">
 <input name="register" type="submit" value="Register">
+</div>
+</fieldset>
 </form>
 </body>
 </html>
