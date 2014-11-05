@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session
+from flask import Flask, render_template, request, session, redirect, url_for
 import hashlib
 from pymongo import MongoClient
 
@@ -13,7 +13,10 @@ def login():
 	username = request.form.get("username")
 	password = request.form.get("password")
         users = MongoClient("mongodb://Bouowmx:ReimuHakurei@ds047440.mongolab.com:47440/account-manager")["account-manager"]["users"]
-        if users.find({"username": username, "password": password}).count() == 0:
+        if (username is None) and (password is None):
+                return render_template("login.html", login_failed = False)
+        info = users.find_one({"username": username})
+        if (info["password"] != hashlib.sha256(password).hexdigest()):
                 return render_template("login.html", login_failed = True)
         session["username"] = username
 	return redirect(url_for("profile"))
@@ -36,18 +39,36 @@ def register():
 	users = MongoClient("mongodb://Bouowmx:ReimuHakurei@ds047440.mongolab.com:47440/account-manager")["account-manager"]["users"]
 	if (users.find({"username": username}).count() != 0):
 		return render_template("register.html", password_confirm = True, username = username, username_available = False)
-	users.insert({"username": username, "password": hashlib.sha256(password).hexdigest()})
+	users.insert({"username": username, "password": hashlib.sha256(password).hexdigest(), "fname": fname, "lname": lname, "age": age, "email": email, "phone": phone, "address":address})
 	return render_template("registersuccess.html", fname = fname, lname = lname);
 
 @app.route("/about/")
 def about():
         return render_template("about.html")
 
-@app.route("/profile/")
+@app.route("/profile/", methods=["GET", "POST"])
 def profile():
-        pass
+        if "username" in session:
+                username = session["username"]
+        else:
+                return redirect(url_for("home"))
+
+        name = request.form.get("name")
+        users = MongoClient("mongodb://Bouowmx:ReimuHakurei@ds047440.mongolab.com:47440/account-manager")["account-manager"]["users"]
+
+        if (name is None) or (users.find({"username": name}).count() == 0):
+                name = username
+
+        info = users.find_one({"username": name})
+        fname = info["fname"]
+        lname = info["lname"]
+        age = info["age"]
+        email = info["email"]
+        phone = info["phone"]
+        address = info["address"]
+        return render_template("profile.html", fname = fname, lname = lname, age = age, email = email, phone = phone, address = address)             
+
+app.secret_key = '\x979\xdb\x11\x8e\x1a<\xb9J\xe8;\xa0\x9fb\xb5\x11k\x8d\x7f\xa6\xd4\xe6\xa4\xb6'
 
 if (__name__ == "__main__"):
 	app.run(debug = True, port = 9001)
-
-app.secret_key = "A0Zr98j/3yX R~XHH!jmN]LWX/,?RT"
